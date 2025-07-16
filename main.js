@@ -1,83 +1,106 @@
-function getComputerChoice(){
-    if ((Math.random() * 100) < 33.3) {
-        return "rock";
+scoreboard = {
+    'human' : 0,
+    'computer' : 0
+}
+outcomes = ["Computer ","Human ","No-one "]
+const winnerRound = document.createElement("div")
+winnerRound.classList.add("winner-round")
+winnerRound.style.fontSize = "40px"
+const body = document.querySelector("body")
+body.appendChild(winnerRound)
+function rock(){
+    winner()
+    const humanEmoji = document.querySelector(".human-choice-event-emoji")
+    const machineEmoji = document.querySelector(".machine-choice-event-emoji")
+    const winnerRoundFunction = document.querySelector(".winner-round")
+    humanEmoji.textContent = "✊"
+    x = Math.random()
+    if (x < 0.33){
+        machineEmoji.textContent = "✊"
+        winnerRoundFunction.textContent = outcomes[2] + "won this round"
+
     }
-    else if (Math.random() * 100 < 66.6) {
-        return "paper";
-    }
+    else if (x < 0.66){
+        machineEmoji.textContent = "✋"
+        scoreboard.computer +=1
+        winnerRoundFunction.textContent = outcomes[0] + "won this round"
+    } 
     else {
-        return "scissors";
+        machineEmoji.textContent = "✌️"
+        scoreboard.human +=1
+        winnerRoundFunction.textContent = outcomes[1] + "won this round"
     }
+    console.log(scoreboard)
 }
 
-function getHumanChoice(){
-    let input=prompt("Enter your choice : ");
-    return input;
-}
-
-let humanScore=0 , computerScore=0;
-
-function playRound(humanChoice, computerChoice){
-    if (humanChoice == "rock") {
-        if (computerChoice == "paper") {
-            console.log("You lose! Paper beats Rock");
-            computerScore +=1;
-            }
-        else if (computerChoice == "scissors") {
-            console.log("You win! Rock beats Scissors");
-            humanScore +=1;
-            }
-        else {
-            console.log("Its a draw");
-            }
+function paper(){
+    winner()
+    const humanEmoji = document.querySelector(".human-choice-event-emoji")
+    const machineEmoji = document.querySelector(".machine-choice-event-emoji")
+    const winnerRoundFunction = document.querySelector(".winner-round")
+    humanEmoji.textContent = "✋"
+    x = Math.random()
+    if (x < 0.33){
+        machineEmoji.textContent = "✊"
+        scoreboard.human +=1
+        winnerRoundFunction.textContent = outcomes[1] + "won this round"
     }
-
-    else if (humanChoice == "paper") {
-     if (computerChoice == "scissors") {
-            console.log("You lose! Scissors beats Paper");
-            computerScore +=1;
-            }
-        else if (computerChoice == "rock") {
-            console.log("You win! Paper beats Rock");
-            humanScore +=1;
-            }
-        else {
-            console.log("Its a draw");
-            }
-    }
-    
+    else if (x < 0.66){
+        machineEmoji.textContent = "✋"
+        winnerRoundFunction.textContent = outcomes[2] + "won this round"
+    } 
     else {
-        if (computerChoice == "rock") {
-            console.log("You lose! Rock beats Scissors");
-            computerScore +=1;
-            }
-        else if (computerChoice == "paper") {
-            console.log("You win! Scissors beats Rock");
-            humanScore +=1;
-            }
-        else {
-            console.log("Its a draw");
-            }
+        machineEmoji.textContent = "✌️"
+        scoreboard.computer +=1
+        winnerRoundFunction.textContent = outcomes[0] + "won this round"
     }
+    console.log(scoreboard)
 }
 
-
-function playGame() {
-    for (i=0;i<5;i++){
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-        playRound(humanSelection.toLowerCase(),computerSelection)
+function scissors(){
+    winner()
+    const humanEmoji = document.querySelector(".human-choice-event-emoji")
+    const machineEmoji = document.querySelector(".machine-choice-event-emoji")
+    const winnerRoundFunction = document.querySelector(".winner-round")
+    humanEmoji.textContent = "✌️"
+    x = Math.random()
+    if (x < 0.33){
+        machineEmoji.textContent = "✊"
+        scoreboard.computer +=1
+        winnerRoundFunction.textContent = outcomes[0] + "won this round"
     }
-    if (humanScore > computerScore) {
-        console.log("You won")
-    }
-    else if (computerScore > humanScore){
-        console.log("Computer Won")
-    }
+    else if (x < 0.66){
+        machineEmoji.textContent = "✋"
+        scoreboard.human +=1
+        winnerRoundFunction.textContent = outcomes[1] + "won this round"
+    } 
     else {
-        console.log("It is a draw")
+        machineEmoji.textContent = "✌️"
+        winnerRoundFunction.textContent = outcomes[2] + "won this round"
+    }
+    document.querySelector("body").appendChild(winnerRound)
+    console.log(scoreboard)
+}
+
+function winner() {
+    if (scoreboard.human >= 3 || scoreboard.computer >= 3){
+        const winnerText = document.createElement("div")
+        winnerText.style.fontSize = "40px"
+        if (scoreboard.human > scoreboard.computer){
+            winnerText.textContent = "You won!!"
+        }
+        else {
+            winnerText.textContent = "Computer won!!"
+        }
+        body.replaceChildren(winnerText)
     }
 }
 
-playGame()
-
+const rockButton = document.querySelector(".rock")
+const scissorButton = document.querySelector(".scissor")
+const paperButton = document.querySelector(".paper")
+ 
+rockButton.addEventListener("click",rock)
+scissorButton.addEventListener("click",scissors)
+paperButton.addEventListener("click",paper)
+body.addEventListener("mouseover",winner)
